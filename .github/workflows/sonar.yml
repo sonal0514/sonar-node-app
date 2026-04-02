@@ -1,5 +1,4 @@
 name: SonarQube Analysis
-
 on:
   push:
     branches:
@@ -7,10 +6,11 @@ on:
 
 jobs:
   sonar:
+    name: SonarQube Scan Job
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Source Code
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -29,9 +29,10 @@ jobs:
             -Dsonar.sources=.
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: http://YOUR_IP:9000
+          SONAR_HOST_URL: http://YOUR_SERVER_IP:9000
 
-      - name: Quality Gate Check
+      - name: Check Quality Gate
         uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
+        timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
